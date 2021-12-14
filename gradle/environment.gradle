@@ -1,0 +1,12 @@
+ext {
+    jvmMemoryParam = [:]
+    jvmExtParam = [:]
+}
+jvmMemoryParam += [
+        'default': '-Xms256m -Xmx512m'
+]
+jvmExtParam += [
+        dev: [
+                acp_log_path       : 'logs'
+        ]
+]

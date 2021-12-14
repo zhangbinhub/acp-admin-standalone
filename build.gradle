@@ -1,0 +1,269 @@
+ext {
+    println("Environment        : JAVA_HOME=$System.env.JAVA_HOME")
+    println("Gradle Version     : ${gradleVersion}")
+    println("Target JDK Version : ${javaVersion}")
+    println("Kotlin Version     : ${kotlinVersion}")
+    println("Spring Boot Version: ${springBootVersion}")
+    println("Core Version       : ${CoreVersion}")
+    println("Encoding           : ${encoding}")
+    println("Build Version      : ${version}")
+}
+
+buildscript {
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+    repositories {
+        mavenLocal()
+        maven {
+            url = new URI("${mavenCentralUrl}")
+            allowInsecureProtocol = true
+        }
+        mavenCentral()
+    }
+}
+
+allprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+    apply plugin: 'kotlin-kapt'
+    apply plugin: 'kotlin-spring'
+    apply plugin: 'kotlin-noarg'
+    apply plugin: 'kotlin-jpa'
+    apply plugin: 'idea'
+    apply plugin: "org.springframework.boot"
+    apply plugin: "io.spring.dependency-management"
+
+    apply from: "$rootDir/gradle/dependencies.gradle"
+    apply from: "$rootDir/gradle/environment.gradle"
+
+    sourceCompatibility = "${javaVersion}"
+    targetCompatibility = "${javaVersion}"
+
+    buildscript {
+        repositories {
+            mavenLocal()
+            maven {
+                url = new URI("${mavenCentralUrl}")
+                allowInsecureProtocol = true
+            }
+            mavenCentral()
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        maven {
+            url = new URI("${mavenCentralUrl}")
+            allowInsecureProtocol = true
+        }
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("pers.acp.dependency:acp-dependency:${CoreVersion}")
+        }
+    }
+
+    dependencies {
+        testImplementation("org.junit.jupiter:junit-jupiter:$versions.jupiter")
+        testImplementation("org.junit.platform:junit-platform-launcher:$versions.junit_platform")
+        testImplementation "org.jetbrains.kotlin:kotlin-test"
+        testImplementation "org.jetbrains.kotlin:kotlin-test-junit5"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib"
+        implementation "org.jetbrains.kotlin:kotlin-reflect"
+        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlin_coroutines"
+
+        kapt "org.springframework.boot:spring-boot-configuration-processor"
+        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+        implementation "pers.acp.boot:acp-spring-boot-starter"
+        implementation "org.springframework.boot:spring-boot-starter-security"
+        implementation "org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure"
+        implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+        implementation "mysql:mysql-connector-java:$versions.mysql"
+
+        testImplementation "org.springframework.boot:spring-boot-starter-test"
+    }
+
+    task clearPj(type: Delete) {
+        delete 'release', 'build', 'target', 'out'
+    }
+
+    task copyJar(type: Copy) {
+        from(configurations.runtimeClasspath)
+        into('build/libs/dependencies')
+    }
+
+    task mapperFileCopy(type: Copy) {
+        copy {
+            from("src/main/java") {
+                include("**/*.xml")
+                include("**/*.json")
+                include("**/*.properties")
+            }
+            into("${buildDir}/classes/main")
+        }
+        copy {
+            from("src/test/java") {
+                include("**/*.xml")
+                include("**/*.json")
+                include("**/*.properties")
+            }
+            into("${buildDir}/classes/test")
+        }
+        copy {
+            from("src/main/kotlin") {
+                include("**/*.xml")
+                include("**/*.json")
+                include("**/*.properties")
+            }
+            into("${buildDir}/classes/main")
+        }
+        copy {
+            from("src/test/kotlin") {
+                include("**/*.xml")
+                include("**/*.json")
+                include("**/*.properties")
+            }
+            into("${buildDir}/classes/test")
+        }
+    }
+
+    jar {
+        dependsOn(copyJar)
+        manifest {
+            attributes('Version': "${project.version}", 'Provider': "Gradle ${gradleVersion}", 'JDK': "${javaVersion}", 'Kotlin': "${kotlinVersion}", 'Project': 'Acp Admin Cloud')
+        }
+    }
+
+    bootJar {
+        manifest {
+            attributes('Version': "${project.version}", 'Provider': "Gradle ${gradleVersion}", 'JDK': "${javaVersion}", 'Kotlin': "${kotlinVersion}", 'Project': 'Acp Admin Cloud')
+        }
+    }
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    javadoc {
+        options.charSet = "${encoding}"
+        options.docEncoding = "${encoding}"
+        options.encoding = "${encoding}"
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+
+    compileJava {
+        options.encoding = "${encoding}"
+    }
+    compileJava.dependsOn(processResources)
+    compileTestJava {
+        options.encoding = "${encoding}"
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "${javaVersion}"
+        }
+    }
+    compileKotlin.dependsOn(processResources)
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "${javaVersion}"
+        }
+    }
+
+    task release(dependsOn: [build, copyJar])
+
+    test {
+        useJUnitPlatform()
+        exclude '**/*nobuild**'
+    }
+
+    def generateShell = { String appJarName ->
+        def memoryParam = jvmMemoryParam.get('default') as String
+        File templateFile = new File("$rootDir/doc/script/server.bat")
+        List<String> lines = templateFile.readLines("UTF-8")
+        StringBuilder buffer = new StringBuilder()
+        for (String line : lines) {
+            buffer.append(line).append("\n")
+        }
+        String shellContent = buffer.toString()
+        shellContent = shellContent.replaceAll("@appJarName@", appJarName)
+        shellContent = shellContent.replaceAll("@jvmMemoryParam@", memoryParam)
+        File outFile = new File("$rootDir/release/$project.name/server.bat")
+        Writer writer = new FileWriter(outFile)
+        writer.write(new String(shellContent.getBytes("UTF-8")))
+        writer.flush()
+        writer.close()
+    }
+
+    def generateShell_linux = { String appJarName ->
+        def memoryParam = jvmMemoryParam.get('default') as String
+        // generate linux shell
+        File templateFile = new File("$rootDir/doc/script/server.model")
+        List<String> lines = templateFile.readLines("UTF-8")
+        StringBuilder buffer = new StringBuilder()
+        for (String line : lines) {
+            buffer.append(line).append("\n")
+        }
+        String shellContent = buffer.toString()
+        shellContent = shellContent.replaceAll("@appJarName@", appJarName)
+        shellContent = shellContent.replaceAll("@jvmMemoryParam@", memoryParam)
+        StringBuilder jvmExtParamBuilder = new StringBuilder()
+        jvmExtParamBuilder.append("'")
+        if (project.hasProperty("active") && project.active != null && project.active != "") {
+            println("$project.name release finished: active=$project.active")
+            def envParam = jvmExtParam.get(project.active)
+            if (envParam != null) {
+                jvmExtParamBuilder.append("-Dacp_profile_active=$project.active" as String)
+                jvmExtParamBuilder.append(" -Dacp_log_path=" + envParam['acp_log_path'] as String)
+            }
+        }
+        jvmExtParamBuilder.append("'")
+        shellContent = shellContent.replaceAll("@jvmExtParam@", jvmExtParamBuilder.toString())
+        File outFile = new File("$rootDir/release/$project.name/server.sh")
+        Writer writer = new FileWriter(outFile)
+        writer.write(new String(shellContent.getBytes("UTF-8")))
+        writer.flush()
+        writer.close()
+
+        // generate k8s shell
+        File templateFileK8s = new File("$rootDir/doc/script/server-k8s.model")
+        List<String> linesK8s = templateFileK8s.readLines("UTF-8")
+        StringBuilder bufferK8s = new StringBuilder()
+        for (String line : linesK8s) {
+            bufferK8s.append(line).append("\n")
+        }
+        String shellContentK8s = bufferK8s.toString()
+        shellContentK8s = shellContentK8s.replaceAll("@appJarName@", appJarName)
+        shellContentK8s = shellContentK8s.replaceAll("@jvmMemoryParam@", memoryParam)
+        File outFileK8s = new File("$rootDir/release/$project.name/server-k8s.sh")
+        Writer writerK8s = new FileWriter(outFileK8s)
+        writerK8s.write(new String(shellContentK8s.getBytes("UTF-8")))
+        writerK8s.flush()
+        writerK8s.close()
+    } as Object
+
+    build {
+        doLast {
+            def fileName = "$project.name" + "-" + "$project.version" + ".jar"
+            copy {
+                from file("${buildDir}/libs/" + fileName)
+                into "$rootDir/release/$project.name"
+            }
+            copy {
+                from "${buildDir}/resources/main"
+                into "$rootDir/release/$project.name"
+            }
+            generateShell_linux(fileName)
+        }
+    }
+}

@@ -29,10 +29,13 @@
 ##### 1.[gradle/dependencies.gradle](gradle/dependencies.gradle)
 定义外部依赖版本号
 
-##### 2.[settings.gradle](settings.gradle)
+##### 2.[gradle/environment.gradle](gradle/environment.gradle)
+编译时定义的环境变量
+
+##### 3.[settings.gradle](settings.gradle)
 定义项目/模块结构
 
-##### 3.[project.properties](project.properties)
+##### 4.[project.properties](project.properties)
 gradle全局参数：
 - gradleVersion：gradle版本号
 - group：对应打包时的最外层groupid，最终的groupid还会加上模块路径，例如`groupid.acp.core`
@@ -41,7 +44,7 @@ gradle全局参数：
 - mavenCentralUrl：maven中央仓库地址
 - javaVersion：jdk版本号
 
-##### 4.[build.gradle](build.gradle)
+##### 5.[build.gradle](build.gradle)
 公共构建脚本
 
 ### （二）自定义任务

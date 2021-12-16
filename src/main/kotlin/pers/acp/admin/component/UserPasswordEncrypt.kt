@@ -1,8 +1,8 @@
 package pers.acp.admin.component
 
 import org.springframework.stereotype.Component
-import pers.acp.core.CommonTools
-import pers.acp.core.security.Sha256Encrypt
+import io.github.zhangbinhub.acp.core.CommonTools
+import io.github.zhangbinhub.acp.core.security.Sha256Encrypt
 
 /**
  * 密码加解密工具类

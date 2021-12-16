@@ -13,7 +13,7 @@ import pers.acp.admin.api.OauthApi
 import pers.acp.admin.vo.OrganizationVo
 import pers.acp.admin.domain.OrganizationDomain
 import pers.acp.admin.entity.Organization
-import pers.acp.spring.boot.interfaces.LogAdapter
+import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
 
 /**
  * @author zhang by 16/01/2019

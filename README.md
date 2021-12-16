@@ -1,12 +1,12 @@
 # acp-admin-standalone
 ###### v1.0.0 [版本更新日志](doc/version_history.md)
 - 使用Application Construction Platform 应用构建平台作为脚手架
-- 基于 Spring Boot 的单机版，基于 Spring Cloud 版本请查看[这里](https://github.com/zhangbin1010/acp-admin-cloud)
-- 该项目是前后端分离架构中的“后端部分”。前端工程[v1.0.0](https://github.com/zhangbin1010/acp-admin-standalone-web)
+- 基于 Spring Boot 的单机版，基于 Spring Cloud 版本请查看[这里](https://github.com/zhangbinhub/acp-admin-cloud)
+- 该项目是前后端分离架构中的“后端部分”。前端工程[v1.0.0](https://github.com/zhangbinhub/acp-admin-standalone-web)
 
 ## 相关组件版本
 - [Spring Boot 2.6.1](https://projects.spring.io/spring-boot)
-- [Acp 6.7.2](https://github.com/zhangbin1010/acp)
+- [Acp 2021.0.0](https://github.com/zhangbinhub/acp)
 
 ## 技术栈
 - joda-time
@@ -24,30 +24,25 @@
 - gradle 6.5+
 - kotlin 1.5+
 
-## 二、gradle 配置及使用
+## 二、gradle 脚本配置及使用
 ### （一）配置文件
-##### 1.gradle/dependencies.gradle
+##### 1.[gradle/dependencies.gradle](gradle/dependencies.gradle)
 定义外部依赖版本号
 
-##### 2.gradle/environment.gradle
-编译时定义的环境变量
-    
-##### 3.settings.gradle
+##### 2.[settings.gradle](settings.gradle)
 定义项目/模块结构
 
-##### 4.gradle.properties
+##### 3.[project.properties](project.properties)
 gradle全局参数：
 - gradleVersion：gradle版本号
-- group：对应打包时的groupid
-- version：工程版本号
+- group：对应打包时的最外层groupid，最终的groupid还会加上模块路径，例如`groupid.acp.core`
+- version：版本号
 - encoding：编译字符集
 - mavenCentralUrl：maven中央仓库地址
-- org.gradle.jvmargs：gradle执行时的jvm参数
 - javaVersion：jdk版本号
-- kotlinVersion：kotlin版本号
-    
-##### 5.build.gradle
-构建脚本
+
+##### 4.[build.gradle](build.gradle)
+公共构建脚本
 
 ### （二）自定义任务
 - clearPj 清理所有输出文件
@@ -56,13 +51,6 @@ gradle全局参数：
   ```
   gradlew project:release -Pactive=test
   ```
-```groovy
-ext {
-    mavenUploadUrl = "http://localhost:8081/nexus/content/repositories/thirdparty"
-    mavenUserName = "admin"
-    mavenPassword = "admin123"
-}
-```
 
 ### （三）升级命令
 ```

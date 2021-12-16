@@ -12,7 +12,7 @@ import pers.acp.admin.repo.MenuRepository
 import pers.acp.admin.repo.RoleRepository
 import pers.acp.admin.repo.UserRepository
 import pers.acp.admin.vo.MenuVo
-import pers.acp.spring.boot.exceptions.ServerException
+import io.github.zhangbinhub.acp.boot.exceptions.ServerException
 
 /**
  * @author zhang by 26/12/2018

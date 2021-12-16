@@ -19,10 +19,10 @@ import pers.acp.admin.domain.RoleDomain
 import pers.acp.admin.entity.Role
 import pers.acp.admin.po.RolePo
 import pers.acp.admin.vo.RoleVo
-import pers.acp.core.CommonTools
-import pers.acp.spring.boot.exceptions.ServerException
-import pers.acp.spring.boot.interfaces.LogAdapter
-import pers.acp.spring.boot.vo.ErrorVo
+import io.github.zhangbinhub.acp.core.CommonTools
+import io.github.zhangbinhub.acp.boot.exceptions.ServerException
+import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
+import io.github.zhangbinhub.acp.boot.vo.ErrorVo
 
 import javax.annotation.PostConstruct
 import javax.validation.Valid

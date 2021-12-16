@@ -19,10 +19,10 @@ import pers.acp.admin.domain.RuntimeConfigDomain
 import pers.acp.admin.entity.RuntimeConfig
 import pers.acp.admin.po.RuntimePo
 import pers.acp.admin.po.RuntimeQueryPo
-import pers.acp.core.CommonTools
-import pers.acp.spring.boot.exceptions.ServerException
-import pers.acp.spring.boot.interfaces.LogAdapter
-import pers.acp.spring.boot.vo.ErrorVo
+import io.github.zhangbinhub.acp.core.CommonTools
+import io.github.zhangbinhub.acp.boot.exceptions.ServerException
+import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
+import io.github.zhangbinhub.acp.boot.vo.ErrorVo
 
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty

@@ -6,8 +6,8 @@ import org.springframework.http.MediaType
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
-import pers.acp.spring.boot.enums.ResponseCode
-import pers.acp.spring.boot.vo.ErrorVo
+import io.github.zhangbinhub.acp.boot.enums.ResponseCode
+import io.github.zhangbinhub.acp.boot.vo.ErrorVo
 
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest

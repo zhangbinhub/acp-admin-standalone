@@ -12,9 +12,9 @@ import pers.acp.admin.api.OauthApi
 import pers.acp.admin.vo.InfoVo
 import pers.acp.admin.domain.UserDomain
 import pers.acp.admin.vo.UserVo
-import pers.acp.spring.boot.exceptions.ServerException
-import pers.acp.spring.boot.interfaces.LogAdapter
-import pers.acp.spring.boot.vo.ErrorVo
+import io.github.zhangbinhub.acp.boot.exceptions.ServerException
+import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
+import io.github.zhangbinhub.acp.boot.vo.ErrorVo
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull

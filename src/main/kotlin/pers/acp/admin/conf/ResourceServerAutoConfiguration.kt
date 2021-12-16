@@ -10,8 +10,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.access.AccessDeniedHandler
 import pers.acp.admin.constant.RestPrefix
-import pers.acp.core.CommonTools
-import pers.acp.core.log.LogFactory
+import io.github.zhangbinhub.acp.core.CommonTools
+import io.github.zhangbinhub.acp.core.log.LogFactory
 import java.util.*
 
 /**

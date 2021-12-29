@@ -5,9 +5,9 @@ ext {
 versions += [
         jupiter         : "5.8.2",
         junitPlatform   : "1.8.2",
-        kotlin          : "1.6.0",
+        kotlin          : "1.6.10",
         kotlinCoroutines: "1.5.2",
-        springBoot      : "2.6.1",
-        acp             : "2021.0.0-M6",
+        springBoot      : "2.6.2",
+        acp             : "2021.0.0-M7",
         mysql           : "8.0.27"
 ]

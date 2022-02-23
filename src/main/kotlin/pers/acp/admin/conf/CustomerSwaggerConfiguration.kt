@@ -22,18 +22,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 @Configuration(proxyBeanMethods = false)
 @EnableSwagger2
 @EnableKnife4j
-class CustomerSwaggerConfiguration @Autowired
-constructor(
-    @Value("\${info.version}")
-    version: String?,
-    swaggerConfiguration: SwaggerConfiguration
+class CustomerSwaggerConfiguration @Autowired constructor(
+    @Value("\${info.version}") version: String, swaggerConfiguration: SwaggerConfiguration
 ) : BaseSwaggerConfiguration(version, swaggerConfiguration) {
 
     @Bean
     fun createRestApi() = buildDocket("pers.acp.admin.controller", "Server RESTful API")
 
     @Bean
-    fun springfoxHandlerProviderBeanPostProcessor(): BeanPostProcessor? {
+    fun springfoxHandlerProviderBeanPostProcessor(): BeanPostProcessor {
         return object : BeanPostProcessor {
             @Throws(BeansException::class)
             override fun postProcessAfterInitialization(bean: Any, beanName: String): Any {
@@ -55,17 +52,16 @@ constructor(
                 }
             }
 
-            private fun getHandlerMappings(bean: Any): Any =
-                try {
-                    ReflectionUtils.findField(bean.javaClass, "handlerMappings")?.let {
-                        it.isAccessible = true
-                        it[bean]
-                    } ?: mutableListOf<RequestMappingInfoHandlerMapping>()
-                } catch (e: IllegalArgumentException) {
-                    throw IllegalStateException(e)
-                } catch (e: IllegalAccessException) {
-                    throw IllegalStateException(e)
-                }
+            private fun getHandlerMappings(bean: Any): Any = try {
+                ReflectionUtils.findField(bean.javaClass, "handlerMappings")?.let {
+                    it.isAccessible = true
+                    it[bean]
+                } ?: mutableListOf<RequestMappingInfoHandlerMapping>()
+            } catch (e: IllegalArgumentException) {
+                throw IllegalStateException(e)
+            } catch (e: IllegalAccessException) {
+                throw IllegalStateException(e)
+            }
         }
     }
 }

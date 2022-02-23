@@ -39,6 +39,9 @@ spring:
     name: acp-admin-standalone
   thymeleaf:
     cache: false
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   servlet:
     multipart:
       max-file-size: 100MB
@@ -69,4 +72,4 @@ spring:
 # ===============================
 acp:
   swagger:
-    enabled: false
+    enabled: true

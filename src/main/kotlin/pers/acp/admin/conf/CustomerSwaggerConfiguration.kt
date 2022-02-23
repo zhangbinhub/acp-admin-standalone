@@ -55,7 +55,7 @@ constructor(
                 }
             }
 
-            private fun getHandlerMappings(bean: Any): Any? =
+            private fun getHandlerMappings(bean: Any): Any =
                 try {
                     ReflectionUtils.findField(bean.javaClass, "handlerMappings")?.let {
                         it.isAccessible = true

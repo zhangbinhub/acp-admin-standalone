@@ -1,6 +1,5 @@
 package pers.acp.admin.conf
 
-import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j
 import io.github.zhangbinhub.acp.boot.conf.SwaggerConfiguration
 import org.springframework.beans.BeansException
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,15 +12,12 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 import pers.acp.admin.base.BaseSwaggerConfiguration
 import springfox.documentation.spring.web.plugins.WebFluxRequestHandlerProvider
 import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider
-import springfox.documentation.swagger2.annotations.EnableSwagger2
 
 /**
  * @author zhang by 27/12/2018
  * @since JDK 11
  */
 @Configuration(proxyBeanMethods = false)
-@EnableSwagger2
-@EnableKnife4j
 class CustomerSwaggerConfiguration @Autowired constructor(
     @Value("\${info.version}") version: String, swaggerConfiguration: SwaggerConfiguration
 ) : BaseSwaggerConfiguration(version, swaggerConfiguration) {

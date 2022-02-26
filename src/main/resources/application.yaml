@@ -67,6 +67,8 @@ spring:
       idle-timeout: 300000
       connection-timeout: 10000
       read-only: false
+knife4j:
+  enable: true
 # ===============================
 # = ACP Config
 # ===============================

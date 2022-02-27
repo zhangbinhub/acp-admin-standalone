@@ -1,5 +1,6 @@
 package pers.acp.admin.security
 
+import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component
 import pers.acp.admin.constant.RoleCode
 import pers.acp.admin.domain.ModuleFuncDomain
 import pers.acp.admin.domain.UserDomain
-import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
 
 /**
  * @author zhangbin by 11/04/2018 15:19

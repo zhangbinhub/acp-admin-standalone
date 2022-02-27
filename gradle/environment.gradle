@@ -7,6 +7,6 @@ jvmMemoryParam += [
 ]
 jvmExtParam += [
         dev: [
-                acp_log_path       : 'logs'
+                acp_log_path: 'logs'
         ]
 ]

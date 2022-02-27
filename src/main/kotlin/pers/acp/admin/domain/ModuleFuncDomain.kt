@@ -1,5 +1,6 @@
 package pers.acp.admin.domain
 
+import io.github.zhangbinhub.acp.boot.exceptions.ServerException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.stereotype.Service
@@ -12,7 +13,6 @@ import pers.acp.admin.repo.ModuleFuncRepository
 import pers.acp.admin.repo.RoleRepository
 import pers.acp.admin.repo.UserRepository
 import pers.acp.admin.vo.ModuleFuncVo
-import io.github.zhangbinhub.acp.boot.exceptions.ServerException
 
 /**
  * @author zhang by 16/01/2019

@@ -1,5 +1,9 @@
 package pers.acp.admin.controller.api
 
+import io.github.zhangbinhub.acp.boot.exceptions.ServerException
+import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
+import io.github.zhangbinhub.acp.boot.vo.ErrorVo
+import io.github.zhangbinhub.acp.core.CommonTools
 import io.swagger.annotations.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -9,19 +13,15 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import pers.acp.admin.base.BaseController
 import pers.acp.admin.api.OauthApi
+import pers.acp.admin.base.BaseController
 import pers.acp.admin.constant.OrgConfigExpression
-import pers.acp.admin.vo.InfoVo
 import pers.acp.admin.domain.OrganizationDomain
 import pers.acp.admin.entity.Organization
 import pers.acp.admin.po.OrganizationPo
+import pers.acp.admin.vo.InfoVo
 import pers.acp.admin.vo.OrganizationVo
-import io.github.zhangbinhub.acp.core.CommonTools
-import io.github.zhangbinhub.acp.boot.exceptions.ServerException
-import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
-import io.github.zhangbinhub.acp.boot.vo.ErrorVo
-
+import springfox.documentation.annotations.ApiIgnore
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
@@ -48,25 +48,25 @@ constructor(
     @ApiOperation(value = "获取可编辑的机构列表", notes = "查询所有可编辑的机构列表")
     @GetMapping(value = [OauthApi.modifiableOrg], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun modOrgList(user: OAuth2Authentication): ResponseEntity<List<Organization>> =
+    fun modOrgList(@ApiIgnore user: OAuth2Authentication): ResponseEntity<List<Organization>> =
         ResponseEntity.ok(organizationDomain.getModOrgList(user.name))
 
     @ApiOperation(value = "获取所属机构及其所有子机构列表（所属机构）")
     @GetMapping(value = [OauthApi.currAndAllChildrenOrg], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun currAndAllChildrenOrgList(user: OAuth2Authentication): ResponseEntity<List<Organization>> =
+    fun currAndAllChildrenOrgList(@ApiIgnore user: OAuth2Authentication): ResponseEntity<List<Organization>> =
         ResponseEntity.ok(organizationDomain.getCurrAndAllChildrenForOrg(user.name))
 
     @ApiOperation(value = "获取所属机构及其所有子机构列表（管理机构）")
     @GetMapping(value = [OauthApi.currAndAllChildrenMngOrg], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun currAndAllChildrenForMngOrg(user: OAuth2Authentication): ResponseEntity<List<Organization>> =
+    fun currAndAllChildrenForMngOrg(@ApiIgnore user: OAuth2Authentication): ResponseEntity<List<Organization>> =
         ResponseEntity.ok(organizationDomain.getCurrAndAllChildrenForMngOrg(user.name))
 
     @ApiOperation(value = "获取所属机构及其所有子机构列表（所有机构）")
     @GetMapping(value = [OauthApi.currAndAllChildrenAllOrg], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun currAndAllChildrenForAllOrg(user: OAuth2Authentication): ResponseEntity<List<Organization>> =
+    fun currAndAllChildrenForAllOrg(@ApiIgnore user: OAuth2Authentication): ResponseEntity<List<Organization>> =
         ResponseEntity.ok(organizationDomain.getCurrAndAllChildrenForAllOrg(user.name))
 
     @ApiOperation(value = "新建机构信息", notes = "名称、编码、上级ID、序号、关联用户")
@@ -78,7 +78,7 @@ constructor(
     @PutMapping(value = [OauthApi.orgConfig], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
     fun add(
-        user: OAuth2Authentication,
+        @ApiIgnore user: OAuth2Authentication,
         @RequestBody @Valid organizationPo: OrganizationPo
     ): ResponseEntity<Organization> =
         organizationDomain.doCreate(user.name, organizationPo).let {
@@ -91,7 +91,7 @@ constructor(
     @DeleteMapping(value = [OauthApi.orgConfig], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
     fun delete(
-        user: OAuth2Authentication,
+        @ApiIgnore user: OAuth2Authentication,
         @ApiParam(value = "id列表", required = true)
         @NotEmpty(message = "id不能为空")
         @NotNull(message = "id不能为空")
@@ -106,7 +106,7 @@ constructor(
     @PatchMapping(value = [OauthApi.orgConfig], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
     fun update(
-        user: OAuth2Authentication,
+        @ApiIgnore user: OAuth2Authentication,
         @RequestBody @Valid organizationPo: OrganizationPo
     ): ResponseEntity<Organization> {
         if (CommonTools.isNullStr(organizationPo.id)) {

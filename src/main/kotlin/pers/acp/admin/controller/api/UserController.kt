@@ -1,5 +1,9 @@
 package pers.acp.admin.controller.api
 
+import io.github.zhangbinhub.acp.boot.exceptions.ServerException
+import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
+import io.github.zhangbinhub.acp.boot.vo.ErrorVo
+import io.github.zhangbinhub.acp.core.CommonTools
 import io.swagger.annotations.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -10,23 +14,19 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import pers.acp.admin.base.BaseController
 import pers.acp.admin.api.OauthApi
+import pers.acp.admin.base.BaseController
+import pers.acp.admin.constant.OauthConstant
 import pers.acp.admin.constant.UserConfigExpression
-import pers.acp.admin.vo.InfoVo
+import pers.acp.admin.domain.RuntimeConfigDomain
 import pers.acp.admin.domain.UserDomain
 import pers.acp.admin.entity.User
 import pers.acp.admin.po.UserInfoPo
 import pers.acp.admin.po.UserPo
 import pers.acp.admin.po.UserQueryPo
+import pers.acp.admin.vo.InfoVo
 import pers.acp.admin.vo.UserVo
-import io.github.zhangbinhub.acp.core.CommonTools
-import pers.acp.admin.constant.OauthConstant
-import pers.acp.admin.domain.RuntimeConfigDomain
-import io.github.zhangbinhub.acp.boot.exceptions.ServerException
-import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
-import io.github.zhangbinhub.acp.boot.vo.ErrorVo
-
+import springfox.documentation.annotations.ApiIgnore
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
@@ -51,7 +51,7 @@ constructor(
     @ApiResponses(ApiResponse(code = 400, message = "找不到用户信息", response = ErrorVo::class))
     @GetMapping(value = [OauthApi.currUser], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun userInfo(user: OAuth2Authentication): ResponseEntity<User> =
+    fun userInfo(@ApiIgnore user: OAuth2Authentication): ResponseEntity<User> =
         (userDomain.getUserInfoByLoginNo(user.name)?.apply {
             if (this.lastUpdatePasswordTime == null) {
                 this.passwordExpire = true
@@ -73,7 +73,10 @@ constructor(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     @Throws(ServerException::class)
-    fun updateCurrUser(user: OAuth2Authentication, @RequestBody @Valid userInfoPo: UserInfoPo): ResponseEntity<User> {
+    fun updateCurrUser(
+        @ApiIgnore user: OAuth2Authentication,
+        @RequestBody @Valid userInfoPo: UserInfoPo
+    ): ResponseEntity<User> {
         val userInfo = userDomain.getUserInfoByLoginNo(user.name) ?: throw ServerException("找不到用户信息")
         if (!CommonTools.isNullStr(userInfoPo.mobile)) {
             userDomain.getMobileForOtherUser(userInfoPo.mobile!!, userInfo.id)
@@ -100,7 +103,7 @@ constructor(
     @ApiResponses(ApiResponse(code = 400, message = "找不到用户信息", response = ErrorVo::class))
     @PreAuthorize(UserConfigExpression.userConfig)
     @GetMapping(value = [OauthApi.modifiableUser], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun modifiableUser(user: OAuth2Authentication): ResponseEntity<List<UserVo>> =
+    fun modifiableUser(@ApiIgnore user: OAuth2Authentication): ResponseEntity<List<UserVo>> =
         ResponseEntity.ok(userDomain.findModifiableUserList(user.name))
 
     @ApiOperation(value = "新建用户信息", notes = "名称、登录账号、手机号、级别、序号、是否启用、关联机构、管理机构、关联角色")
@@ -111,7 +114,7 @@ constructor(
     @PreAuthorize(UserConfigExpression.userAdd)
     @PutMapping(value = [OauthApi.userConfig], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun add(user: OAuth2Authentication, @RequestBody @Valid userPo: UserPo): ResponseEntity<User> =
+    fun add(@ApiIgnore user: OAuth2Authentication, @RequestBody @Valid userPo: UserPo): ResponseEntity<User> =
         userDomain.doCreate(user.name, userPo).let {
             ResponseEntity.status(HttpStatus.CREATED).body(it)
         }
@@ -122,7 +125,7 @@ constructor(
     @DeleteMapping(value = [OauthApi.userConfig], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
     fun delete(
-        user: OAuth2Authentication,
+        @ApiIgnore user: OAuth2Authentication,
         @ApiParam(value = "id列表", required = true)
         @NotEmpty(message = "id不能为空")
         @NotNull(message = "id不能为空")
@@ -144,7 +147,7 @@ constructor(
     @PreAuthorize(UserConfigExpression.userUpdate)
     @PatchMapping(value = [OauthApi.userConfig], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun update(user: OAuth2Authentication, @RequestBody @Valid userPo: UserPo): ResponseEntity<User> {
+    fun update(@ApiIgnore user: OAuth2Authentication, @RequestBody @Valid userPo: UserPo): ResponseEntity<User> {
         if (CommonTools.isNullStr(userPo.id)) {
             throw ServerException("ID不能为空")
         }
@@ -156,7 +159,7 @@ constructor(
     @PreAuthorize(UserConfigExpression.userUpdate)
     @GetMapping(value = [OauthApi.userResetPwd + "/{userId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun resetPwd(user: OAuth2Authentication, @PathVariable userId: String): ResponseEntity<InfoVo> {
+    fun resetPwd(@ApiIgnore user: OAuth2Authentication, @PathVariable userId: String): ResponseEntity<InfoVo> {
         userDomain.doUpdatePwd(user.name, userId)
         return ResponseEntity.ok(InfoVo(message = "操作成功"))
     }
@@ -208,7 +211,7 @@ constructor(
     )
     @Throws(ServerException::class)
     fun getUserListByCurrOrgAndRole(
-        user: OAuth2Authentication,
+        @ApiIgnore user: OAuth2Authentication,
         @ApiParam(value = "角色编码", required = true)
         @NotBlank(message = "角色编码不能为空")
         @RequestParam roleCode: String
@@ -224,7 +227,7 @@ constructor(
     )
     @Throws(ServerException::class)
     fun getUserListByRelativeOrgAndRole(
-        user: OAuth2Authentication,
+        @ApiIgnore user: OAuth2Authentication,
         @ApiParam(value = "机构层级", required = true)
         @NotBlank(message = "机构层级不能为空")
         @RequestParam orgLevel: String,

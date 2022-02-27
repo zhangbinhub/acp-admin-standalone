@@ -4,12 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import pers.acp.admin.constant.ModuleFuncCode;
-import pers.acp.admin.constant.RoleCode;
 import pers.acp.admin.BaseTest;
 import pers.acp.admin.component.UserPasswordEncrypt;
+import pers.acp.admin.constant.ModuleFuncCode;
+import pers.acp.admin.constant.RoleCode;
 import pers.acp.admin.entity.*;
-import pers.acp.admin.entity.ModuleFunc;
 import pers.acp.admin.repo.*;
 
 /**

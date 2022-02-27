@@ -23,7 +23,7 @@ class CustomerSwaggerConfiguration @Autowired constructor(
 ) : BaseSwaggerConfiguration(version, swaggerConfiguration) {
 
     @Bean
-    fun createRestApi() = buildDocket("pers.acp.admin.controller", "Server RESTful API")
+    fun createRestApi() = buildDocket()
 
     @Bean
     fun springfoxHandlerProviderBeanPostProcessor(): BeanPostProcessor {

@@ -1,13 +1,14 @@
 package pers.acp.admin.domain
 
+import io.github.zhangbinhub.acp.boot.exceptions.ServerException
+import io.github.zhangbinhub.acp.core.CommonTools
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import pers.acp.admin.vo.OrganizationVo
-import pers.acp.admin.vo.RoleVo
 import pers.acp.admin.base.OauthBaseDomain
+import pers.acp.admin.component.UserPasswordEncrypt
 import pers.acp.admin.entity.Organization
 import pers.acp.admin.entity.Role
 import pers.acp.admin.entity.User
@@ -18,14 +19,11 @@ import pers.acp.admin.repo.OrganizationRepository
 import pers.acp.admin.repo.RoleRepository
 import pers.acp.admin.repo.UserRepository
 import pers.acp.admin.token.SecurityTokenService
+import pers.acp.admin.vo.OrganizationVo
+import pers.acp.admin.vo.RoleVo
 import pers.acp.admin.vo.UserVo
-import pers.acp.admin.component.UserPasswordEncrypt
-import io.github.zhangbinhub.acp.core.CommonTools
-import io.github.zhangbinhub.acp.boot.exceptions.ServerException
-
 import javax.persistence.criteria.JoinType
 import javax.persistence.criteria.Predicate
-import java.util.*
 
 /**
  * @author zhang by 19/12/2018

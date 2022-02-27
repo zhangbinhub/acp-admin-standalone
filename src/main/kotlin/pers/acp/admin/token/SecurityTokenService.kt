@@ -1,7 +1,7 @@
 package pers.acp.admin.token
 
+import io.github.zhangbinhub.acp.boot.exceptions.ServerException
 import org.springframework.beans.factory.annotation.Autowired
-
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.oauth2.common.OAuth2AccessToken
 import org.springframework.security.oauth2.provider.OAuth2Authentication
@@ -10,7 +10,6 @@ import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import io.github.zhangbinhub.acp.boot.exceptions.ServerException
 
 /**
  * @author zhang by 19/12/2018

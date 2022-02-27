@@ -1,15 +1,14 @@
 package pers.acp.admin.base
 
+import io.github.zhangbinhub.acp.boot.exceptions.ServerException
 import org.hibernate.Hibernate
 import org.springframework.transaction.annotation.Transactional
-import pers.acp.admin.base.BaseDomain
 import pers.acp.admin.constant.RoleCode
 import pers.acp.admin.entity.Organization
 import pers.acp.admin.entity.Role
 import pers.acp.admin.entity.User
 import pers.acp.admin.repo.OrganizationRepository
 import pers.acp.admin.repo.UserRepository
-import io.github.zhangbinhub.acp.boot.exceptions.ServerException
 
 /**
  * @author zhang by 26/12/2018

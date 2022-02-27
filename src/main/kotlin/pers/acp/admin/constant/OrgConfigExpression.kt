@@ -1,9 +1,5 @@
 package pers.acp.admin.constant
 
-import pers.acp.admin.constant.ModuleFuncCode
-import pers.acp.admin.constant.RoleCode
-import pers.acp.admin.base.BaseExpression
-
 /**
  * 定义机构配置权限表达式
  *
@@ -14,7 +10,8 @@ object OrgConfigExpression {
     /**
      * 机构配置
      */
-    const val orgConfig = "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.orgConfig + "')"
+    const val orgConfig =
+        "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.orgConfig + "')"
 
     /**
      * 机构新增
@@ -24,12 +21,14 @@ object OrgConfigExpression {
     /**
      * 机构删除
      */
-    const val orgDelete = "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.orgDelete + "')"
+    const val orgDelete =
+        "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.orgDelete + "')"
 
     /**
      * 机构更新
      */
-    const val orgUpdate = "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.orgUpdate + "')"
+    const val orgUpdate =
+        "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.orgUpdate + "')"
 
     /**
      * 机构查询

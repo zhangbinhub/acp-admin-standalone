@@ -1,9 +1,5 @@
 package pers.acp.admin.constant
 
-import pers.acp.admin.constant.ModuleFuncCode
-import pers.acp.admin.constant.RoleCode
-import pers.acp.admin.base.BaseExpression
-
 /**
  * 定义用户配置权限表达式
  *
@@ -14,7 +10,8 @@ object UserConfigExpression {
     /**
      * 用户配置
      */
-    const val userConfig = "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.userConfig + "')"
+    const val userConfig =
+        "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.userConfig + "')"
 
     /**
      * 用户新增
@@ -24,15 +21,18 @@ object UserConfigExpression {
     /**
      * 用户删除
      */
-    const val userDelete = "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.userDelete + "')"
+    const val userDelete =
+        "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.userDelete + "')"
 
     /**
      * 用户更新
      */
-    const val userUpdate = "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.userUpdate + "')"
+    const val userUpdate =
+        "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.userUpdate + "')"
 
     /**
      * 用户查询
      */
-    const val userQuery = "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.userQuery + "')"
+    const val userQuery =
+        "hasAnyAuthority('" + RoleCode.prefix + RoleCode.SUPER + "','" + ModuleFuncCode.userQuery + "')"
 }

@@ -1,5 +1,9 @@
 package pers.acp.admin.controller.api
 
+import io.github.zhangbinhub.acp.boot.exceptions.ServerException
+import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
+import io.github.zhangbinhub.acp.boot.vo.ErrorVo
+import io.github.zhangbinhub.acp.core.CommonTools
 import io.swagger.annotations.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -9,21 +13,17 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import pers.acp.admin.base.BaseController
-import pers.acp.admin.constant.RoleCode
-import pers.acp.admin.base.BaseExpression
 import pers.acp.admin.api.OauthApi
+import pers.acp.admin.base.BaseController
+import pers.acp.admin.base.BaseExpression
+import pers.acp.admin.constant.RoleCode
 import pers.acp.admin.constant.RoleConfigExpression
-import pers.acp.admin.vo.InfoVo
 import pers.acp.admin.domain.RoleDomain
 import pers.acp.admin.entity.Role
 import pers.acp.admin.po.RolePo
+import pers.acp.admin.vo.InfoVo
 import pers.acp.admin.vo.RoleVo
-import io.github.zhangbinhub.acp.core.CommonTools
-import io.github.zhangbinhub.acp.boot.exceptions.ServerException
-import io.github.zhangbinhub.acp.boot.interfaces.LogAdapter
-import io.github.zhangbinhub.acp.boot.vo.ErrorVo
-
+import springfox.documentation.annotations.ApiIgnore
 import javax.annotation.PostConstruct
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
@@ -38,8 +38,9 @@ import javax.validation.constraints.NotNull
 @RequestMapping(OauthApi.basePath)
 @Api(tags = ["角色信息"])
 class RoleController @Autowired
-constructor(private val logAdapter: LogAdapter,
-            private val roleDomain: RoleDomain
+constructor(
+    private val logAdapter: LogAdapter,
+    private val roleDomain: RoleDomain
 ) : BaseController(logAdapter) {
 
     private val roleCodeList: MutableList<String> = mutableListOf()
@@ -71,8 +72,8 @@ constructor(private val logAdapter: LogAdapter,
     @PreAuthorize(BaseExpression.sysConfig)
     @GetMapping(value = [OauthApi.roleList + "/{appId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun getRoleList(user: OAuth2Authentication, @PathVariable appId: String): ResponseEntity<List<Role>> =
-            ResponseEntity.ok(roleDomain.getRoleListByAppId(user.name, appId))
+    fun getRoleList(@ApiIgnore user: OAuth2Authentication, @PathVariable appId: String): ResponseEntity<List<Role>> =
+        ResponseEntity.ok(roleDomain.getRoleListByAppId(user.name, appId))
 
     @ApiOperation(value = "获取角色列表", notes = "查询所有角色列表")
     @PreAuthorize(RoleConfigExpression.roleQuery)
@@ -81,11 +82,14 @@ constructor(private val logAdapter: LogAdapter,
     fun roleList(): ResponseEntity<List<Role>> = ResponseEntity.ok(roleDomain.getRoleList())
 
     @ApiOperation(value = "新建角色信息", notes = "名称、编码、应用ID、级别、序号、关联用户、关联菜单、关联模块功能")
-    @ApiResponses(ApiResponse(code = 201, message = "创建成功", response = Role::class), ApiResponse(code = 400, message = "参数校验不通过；角色编码非法，请重新输入；", response = ErrorVo::class))
+    @ApiResponses(
+        ApiResponse(code = 201, message = "创建成功", response = Role::class),
+        ApiResponse(code = 400, message = "参数校验不通过；角色编码非法，请重新输入；", response = ErrorVo::class)
+    )
     @PreAuthorize(RoleConfigExpression.roleAdd)
     @PutMapping(value = [OauthApi.roleConfig], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun add(user: OAuth2Authentication, @RequestBody @Valid rolePo: RolePo): ResponseEntity<Role> {
+    fun add(@ApiIgnore user: OAuth2Authentication, @RequestBody @Valid rolePo: RolePo): ResponseEntity<Role> {
         if (CommonTools.isNullStr(rolePo.appId)) {
             throw ServerException("应用ID不能为空")
         }
@@ -97,20 +101,28 @@ constructor(private val logAdapter: LogAdapter,
     @PreAuthorize(RoleConfigExpression.roleDelete)
     @DeleteMapping(value = [OauthApi.roleConfig], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun delete(user: OAuth2Authentication,
-               @ApiParam(value = "id列表", required = true)
-               @NotEmpty(message = "id不能为空")
-               @NotNull(message = "id不能为空")
-               @RequestBody
-               idList: MutableList<String>): ResponseEntity<InfoVo> =
-            roleDomain.doDelete(user.name, idList).let { ResponseEntity.ok(InfoVo(message = "删除成功")) }
+    fun delete(
+        @ApiIgnore user: OAuth2Authentication,
+        @ApiParam(value = "id列表", required = true)
+        @NotEmpty(message = "id不能为空")
+        @NotNull(message = "id不能为空")
+        @RequestBody
+        idList: MutableList<String>
+    ): ResponseEntity<InfoVo> =
+        roleDomain.doDelete(user.name, idList).let { ResponseEntity.ok(InfoVo(message = "删除成功")) }
 
     @ApiOperation(value = "更新角色信息", notes = "名称、编码、级别、序号、关联用户、关联菜单、关联模块功能")
-    @ApiResponses(ApiResponse(code = 400, message = "参数校验不通过；角色编码非法，请重新输入；没有权限做此操作；ID不能为空；找不到信息；", response = ErrorVo::class))
+    @ApiResponses(
+        ApiResponse(
+            code = 400,
+            message = "参数校验不通过；角色编码非法，请重新输入；没有权限做此操作；ID不能为空；找不到信息；",
+            response = ErrorVo::class
+        )
+    )
     @PreAuthorize(RoleConfigExpression.roleUpdate)
     @PatchMapping(value = [OauthApi.roleConfig], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
-    fun update(user: OAuth2Authentication, @RequestBody @Valid rolePo: RolePo): ResponseEntity<Role> {
+    fun update(@ApiIgnore user: OAuth2Authentication, @RequestBody @Valid rolePo: RolePo): ResponseEntity<Role> {
         if (CommonTools.isNullStr(rolePo.id)) {
             throw ServerException("ID不能为空")
         }
@@ -123,6 +135,6 @@ constructor(private val logAdapter: LogAdapter,
     @GetMapping(value = [OauthApi.roleConfig + "/{roleId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Throws(ServerException::class)
     fun orgInfo(@PathVariable roleId: String): ResponseEntity<RoleVo> =
-            ResponseEntity.ok(roleDomain.getRoleInfo(roleId))
+        ResponseEntity.ok(roleDomain.getRoleInfo(roleId))
 
 }

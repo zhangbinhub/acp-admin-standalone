@@ -1,7 +1,5 @@
 server:
   port: ${acp_server_port:9090}
-  http2:
-    enabled: true
   undertow:
     threads:
       worker: 1000
@@ -32,6 +30,9 @@ management:
   endpoint:
     health:
       show-details: always
+  info:
+    java:
+      enabled: true
 spring:
   profiles:
     active: ${acp_profile_active:dev}

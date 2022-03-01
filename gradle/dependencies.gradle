@@ -8,6 +8,6 @@ versions += [
         kotlin          : "1.6.10",
         kotlinCoroutines: "1.5.2",
         springBoot      : "2.6.4",
-        acp             : "2021.0.0",
+        acp             : "2021.0.1",
         mysql           : "8.0.28"
 ]

@@ -33,6 +33,8 @@ management:
   info:
     java:
       enabled: true
+    env:
+      enabled: true
 spring:
   profiles:
     active: ${acp_profile_active:dev}

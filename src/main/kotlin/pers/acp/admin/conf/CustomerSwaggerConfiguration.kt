@@ -24,7 +24,7 @@ constructor(
         "Server API",
         "API Document",
         "ZhangBin",
-        "https://github.com/zhangbin1010",
+        "https://github.com/zhangbinhub",
         "zhangbin1010@qq.com"
     ).groupName("网关接口")
         .globalRequestParameters(globalRequestParameter())
@@ -35,7 +35,7 @@ constructor(
         "Server API",
         "API Document",
         "ZhangBin",
-        "https://github.com/zhangbin1010",
+        "https://github.com/zhangbinhub",
         "zhangbin1010@qq.com"
     ).groupName("内部接口")
         .globalRequestParameters(globalRequestParameter())
@@ -46,7 +46,7 @@ constructor(
         "Server API",
         "API Document",
         "ZhangBin",
-        "https://github.com/zhangbin1010",
+        "https://github.com/zhangbinhub",
         "zhangbin1010@qq.com"
     ).groupName("内部开放接口")
 }

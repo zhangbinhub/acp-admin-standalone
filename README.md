@@ -8,7 +8,7 @@
 
 ## 相关组件版本
 
-- [Spring Boot 2.6.2](https://projects.spring.io/spring-boot)
+- [Spring Boot 2.6.4](https://projects.spring.io/spring-boot)
 - [Acp 2021.0.0](https://github.com/zhangbinhub/acp)
 
 ## 技术栈

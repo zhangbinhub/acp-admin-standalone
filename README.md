@@ -4,7 +4,7 @@
 
 - 使用Application Construction Platform 应用构建平台作为脚手架
 - 基于 Spring Boot 的单机版，基于 Spring Cloud 版本请查看[这里](https://github.com/zhangbinhub/acp-admin-cloud)
-- 该项目是前后端分离架构中的“后端部分”。前端工程[v1.0.0](https://github.com/zhangbinhub/acp-admin-standalone-web)
+- 该项目是前后端分离架构中的“后端部分”。[前端工程](https://github.com/zhangbinhub/acp-admin-standalone-web)
 
 ## 相关组件版本
 
